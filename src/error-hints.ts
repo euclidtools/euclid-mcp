@@ -21,7 +21,7 @@ const STATISTICS_EXAMPLES = [
 ];
 
 function getCalculateHint(errorMessage: string): string {
-  if (errorMessage.includes('Unexpected') || errorMessage.includes('Parenthesis')) {
+  if (errorMessage.includes('Unexpected') || errorMessage.includes('Parenthesis') || errorMessage.includes('Value expected')) {
     return 'Check expression syntax. Use * for multiplication, / for division, ^ for exponents, and ensure parentheses are balanced.';
   }
   if (errorMessage.includes('Undefined symbol') || errorMessage.includes('Undefined function')) {
@@ -34,10 +34,10 @@ function getCalculateHint(errorMessage: string): string {
 }
 
 function getConvertHint(errorMessage: string): string {
-  if (errorMessage.includes('Unknown unit') || errorMessage.includes('Unexpected')) {
-    return 'Unknown unit. Use standard abbreviations: km, m, ft, mile, lb, kg, degC, degF, mph, kph.';
+  if (errorMessage.includes('not found')) {
+    return 'Unit not recognized. Use standard abbreviations: km, m, ft, mile, lb, kg, degC, degF, mph, kph.';
   }
-  if (errorMessage.includes('Cannot convert') || errorMessage.includes('dimensions')) {
+  if (errorMessage.includes('do not match')) {
     return 'Units are incompatible. Ensure both measure the same quantity (e.g., length to length, weight to weight).';
   }
   return 'Invalid conversion. Provide a numeric value with valid source and target units.';

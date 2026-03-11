@@ -25,6 +25,11 @@ describe('getErrorHint', () => {
       expect(hint).toContain('disabled');
     });
 
+    it('returns syntax hint for Value expected errors', () => {
+      const { hint } = getErrorHint('calculate', 'Value expected (char 1)');
+      expect(hint).toContain('syntax');
+    });
+
     it('returns fallback hint for unknown errors', () => {
       const { hint, examples } = getErrorHint('calculate', 'Something weird happened');
       expect(hint).toBeTruthy();
@@ -38,13 +43,13 @@ describe('getErrorHint', () => {
   });
 
   describe('convert', () => {
-    it('returns unit hint for Unknown unit errors', () => {
-      const { hint } = getErrorHint('convert', 'Unknown unit foobar');
-      expect(hint).toContain('unit');
+    it('returns unit hint for not-found unit errors', () => {
+      const { hint } = getErrorHint('convert', 'Unit "foobar" not found.');
+      expect(hint).toContain('not recognized');
     });
 
-    it('returns incompatible hint for dimension errors', () => {
-      const { hint } = getErrorHint('convert', 'Cannot convert incompatible dimensions');
+    it('returns incompatible hint for unit mismatch errors', () => {
+      const { hint } = getErrorHint('convert', "Units do not match ('m' != '5 kg')");
       expect(hint).toContain('incompatible');
     });
 
