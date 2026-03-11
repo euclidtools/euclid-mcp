@@ -6,6 +6,32 @@ export type NormalizeResult = {
   original: string;
 };
 
+const UNIT_ALIASES: Record<string, string> = {
+  celsius: 'degC',
+  fahrenheit: 'degF',
+  'kilometers per hour': 'km/hour',
+  'miles per hour': 'mile/hour',
+  'meters per second': 'm/s',
+  'feet per second': 'ft/s',
+  'square meters': 'm^2',
+  'square feet': 'ft^2',
+  'square kilometers': 'km^2',
+  'square miles': 'mile^2',
+  'cubic meters': 'm^3',
+  'cubic feet': 'ft^3',
+  'cubic inches': 'in^3',
+  litres: 'liter',
+};
+
+export function normalizeUnit(input: string): NormalizeResult {
+  const key = input.toLowerCase().trim();
+  const mapped = UNIT_ALIASES[key];
+  if (mapped) {
+    return { value: mapped, wasTransformed: true, original: input };
+  }
+  return { value: input, wasTransformed: false, original: input };
+}
+
 const EXPRESSION_REPLACEMENTS: [RegExp, string][] = [
   [/×/g, '*'],
   [/÷/g, '/'],

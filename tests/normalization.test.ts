@@ -1,6 +1,6 @@
 // tests/normalization.test.ts
 import { describe, it, expect } from 'vitest';
-import { normalizeExpression } from '../src/normalization.js';
+import { normalizeExpression, normalizeUnit } from '../src/normalization.js';
 
 describe('normalizeExpression', () => {
   it('replaces × with *', () => {
@@ -99,5 +99,75 @@ describe('normalizeExpression', () => {
     expect(result.value).toBe('2 * 3 + sqrt(16)');
     expect(result.wasTransformed).toBe(false);
     expect(result.original).toBe('2 * 3 + sqrt(16)');
+  });
+});
+
+describe('normalizeUnit', () => {
+  it('normalizes celsius to degC', () => {
+    const result = normalizeUnit('celsius');
+    expect(result.value).toBe('degC');
+    expect(result.wasTransformed).toBe(true);
+    expect(result.original).toBe('celsius');
+  });
+
+  it('normalizes fahrenheit to degF', () => {
+    const result = normalizeUnit('fahrenheit');
+    expect(result.value).toBe('degF');
+    expect(result.wasTransformed).toBe(true);
+  });
+
+  it('normalizes "kilometers per hour" to km/hour', () => {
+    const result = normalizeUnit('kilometers per hour');
+    expect(result.value).toBe('km/hour');
+    expect(result.wasTransformed).toBe(true);
+  });
+
+  it('normalizes "miles per hour" to mile/hour', () => {
+    const result = normalizeUnit('miles per hour');
+    expect(result.value).toBe('mile/hour');
+    expect(result.wasTransformed).toBe(true);
+  });
+
+  it('normalizes "meters per second" to m/s', () => {
+    const result = normalizeUnit('meters per second');
+    expect(result.value).toBe('m/s');
+    expect(result.wasTransformed).toBe(true);
+  });
+
+  it('normalizes "square meters" to m^2', () => {
+    const result = normalizeUnit('square meters');
+    expect(result.value).toBe('m^2');
+    expect(result.wasTransformed).toBe(true);
+  });
+
+  it('normalizes "cubic feet" to ft^3', () => {
+    const result = normalizeUnit('cubic feet');
+    expect(result.value).toBe('ft^3');
+    expect(result.wasTransformed).toBe(true);
+  });
+
+  it('normalizes "litres" to liter', () => {
+    const result = normalizeUnit('litres');
+    expect(result.value).toBe('liter');
+    expect(result.wasTransformed).toBe(true);
+  });
+
+  it('is case-insensitive', () => {
+    expect(normalizeUnit('Celsius').value).toBe('degC');
+    expect(normalizeUnit('FAHRENHEIT').value).toBe('degF');
+    expect(normalizeUnit('Kilometers Per Hour').value).toBe('km/hour');
+  });
+
+  it('passes through unknown units unchanged', () => {
+    const result = normalizeUnit('km');
+    expect(result.value).toBe('km');
+    expect(result.wasTransformed).toBe(false);
+    expect(result.original).toBe('km');
+  });
+
+  it('passes through already-correct units unchanged', () => {
+    const result = normalizeUnit('degC');
+    expect(result.value).toBe('degC');
+    expect(result.wasTransformed).toBe(false);
   });
 });
