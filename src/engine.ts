@@ -29,6 +29,9 @@ math.import(
 export type EngineResult = { result: string } | { error: string };
 
 export function evaluateExpression(expression: string, precision: number = 14): EngineResult {
+  if (expression.trim().length === 0) {
+    return { error: 'Expression is empty' };
+  }
   if (expression.length > MAX_EXPRESSION_LENGTH) {
     return { error: `Expression too long (${expression.length} chars, max ${MAX_EXPRESSION_LENGTH})` };
   }

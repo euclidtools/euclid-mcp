@@ -23,7 +23,7 @@ describe('edge cases', () => {
 
   it('handles very large numbers', () => {
     const result = evaluateExpression('2^64');
-    expect(result).toHaveProperty('result');
+    expect(result).toEqual({ result: '1.844674407371e+19' });
   });
 
   it('handles complex numbers', () => {
@@ -58,11 +58,16 @@ describe('edge cases', () => {
     expect(result).toEqual({ result: '5' });
   });
 
-  it('handles empty expression', () => {
-    // mathjs evaluates an empty string to undefined, which is formatted as 'undefined'
+  it('rejects empty expression', () => {
     const result = evaluateExpression('');
-    expect(result).toHaveProperty('result');
-    expect((result as { result: string }).result).toBe('undefined');
+    expect(result).toHaveProperty('error');
+    expect((result as { error: string }).error).toBe('Expression is empty');
+  });
+
+  it('rejects whitespace-only expression', () => {
+    const result = evaluateExpression('   ');
+    expect(result).toHaveProperty('error');
+    expect((result as { error: string }).error).toBe('Expression is empty');
   });
 
   it('blocks createUnit', () => {
