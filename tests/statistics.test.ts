@@ -16,7 +16,10 @@ describe('statisticsTool', () => {
   });
 
   it('handler computes mean', async () => {
-    const response = await statisticsTool.handler({ operation: 'mean', data: [23, 45, 12, 67, 34] });
+    const response = await statisticsTool.handler({
+      operation: 'mean',
+      data: [23, 45, 12, 67, 34],
+    });
     expect(response.isError).toBeUndefined();
     const content = JSON.parse(response.content[0].text);
     expect(Number(content.result)).toBeCloseTo(36.2, 5);
@@ -24,13 +27,20 @@ describe('statisticsTool', () => {
   });
 
   it('handler computes median', async () => {
-    const response = await statisticsTool.handler({ operation: 'median', data: [23, 45, 12, 67, 34] });
+    const response = await statisticsTool.handler({
+      operation: 'median',
+      data: [23, 45, 12, 67, 34],
+    });
     const content = JSON.parse(response.content[0].text);
     expect(content.result).toBe('34');
   });
 
   it('handler computes percentile', async () => {
-    const response = await statisticsTool.handler({ operation: 'percentile', data: [1, 2, 3, 4, 5], percentile: 90 });
+    const response = await statisticsTool.handler({
+      operation: 'percentile',
+      data: [1, 2, 3, 4, 5],
+      percentile: 90,
+    });
     expect(response.isError).toBeUndefined();
     const content = JSON.parse(response.content[0].text);
     expect(Number(content.result)).toBeCloseTo(4.6, 1);

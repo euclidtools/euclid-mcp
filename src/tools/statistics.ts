@@ -17,9 +17,7 @@ Examples:
     operation: z
       .enum(['mean', 'median', 'mode', 'std', 'variance', 'min', 'max', 'sum', 'percentile'])
       .describe('The statistical operation to perform'),
-    data: z
-      .array(z.number())
-      .describe('Array of numbers to compute the statistic on'),
+    data: z.array(z.number()).describe('Array of numbers to compute the statistic on'),
     percentile: z
       .number()
       .optional()
@@ -31,13 +29,23 @@ Examples:
 
     if ('error' in result) {
       return {
-        content: [{ type: 'text' as const, text: JSON.stringify({ error: result.error, operation: args.operation }) }],
+        content: [
+          {
+            type: 'text' as const,
+            text: JSON.stringify({ error: result.error, operation: args.operation }),
+          },
+        ],
         isError: true,
       };
     }
 
     return {
-      content: [{ type: 'text' as const, text: JSON.stringify({ result: result.result, operation: args.operation }) }],
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify({ result: result.result, operation: args.operation }),
+        },
+      ],
     };
   },
 };

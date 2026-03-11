@@ -26,13 +26,33 @@ Examples:
 
     if ('error' in result) {
       return {
-        content: [{ type: 'text' as const, text: JSON.stringify({ error: result.error, value: args.value, from: args.from, to: args.to }) }],
+        content: [
+          {
+            type: 'text' as const,
+            text: JSON.stringify({
+              error: result.error,
+              value: args.value,
+              from: args.from,
+              to: args.to,
+            }),
+          },
+        ],
         isError: true,
       };
     }
 
     return {
-      content: [{ type: 'text' as const, text: JSON.stringify({ result: result.result, value: args.value, from: args.from, to: args.to }) }],
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify({
+            result: result.result,
+            value: args.value,
+            from: args.from,
+            to: args.to,
+          }),
+        },
+      ],
     };
   },
 };

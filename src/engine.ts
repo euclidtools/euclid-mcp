@@ -14,16 +14,32 @@ const limitedEvaluate = math.evaluate;
 // Disable dangerous functions
 math.import(
   {
-    import: () => { throw new Error('Function import is disabled'); },
-    createUnit: () => { throw new Error('Function createUnit is disabled'); },
-    evaluate: () => { throw new Error('Function evaluate is disabled'); },
-    parse: () => { throw new Error('Function parse is disabled'); },
-    simplify: () => { throw new Error('Function simplify is disabled'); },
-    derivative: () => { throw new Error('Function derivative is disabled'); },
-    resolve: () => { throw new Error('Function resolve is disabled'); },
-    reviver: () => { throw new Error('Function reviver is disabled'); },
+    import: () => {
+      throw new Error('Function import is disabled');
+    },
+    createUnit: () => {
+      throw new Error('Function createUnit is disabled');
+    },
+    evaluate: () => {
+      throw new Error('Function evaluate is disabled');
+    },
+    parse: () => {
+      throw new Error('Function parse is disabled');
+    },
+    simplify: () => {
+      throw new Error('Function simplify is disabled');
+    },
+    derivative: () => {
+      throw new Error('Function derivative is disabled');
+    },
+    resolve: () => {
+      throw new Error('Function resolve is disabled');
+    },
+    reviver: () => {
+      throw new Error('Function reviver is disabled');
+    },
   },
-  { override: true }
+  { override: true },
 );
 
 export type EngineResult = { result: string } | { error: string };
@@ -33,7 +49,9 @@ export function evaluateExpression(expression: string, precision: number = 14): 
     return { error: 'Expression is empty' };
   }
   if (expression.length > MAX_EXPRESSION_LENGTH) {
-    return { error: `Expression too long (${expression.length} chars, max ${MAX_EXPRESSION_LENGTH})` };
+    return {
+      error: `Expression too long (${expression.length} chars, max ${MAX_EXPRESSION_LENGTH})`,
+    };
   }
 
   try {
@@ -62,12 +80,21 @@ export function convertUnit(value: number, from: string, to: string): EngineResu
   }
 }
 
-export type StatOperation = 'mean' | 'median' | 'mode' | 'std' | 'variance' | 'min' | 'max' | 'sum' | 'percentile';
+export type StatOperation =
+  | 'mean'
+  | 'median'
+  | 'mode'
+  | 'std'
+  | 'variance'
+  | 'min'
+  | 'max'
+  | 'sum'
+  | 'percentile';
 
 export function computeStatistic(
   operation: StatOperation,
   data: number[],
-  percentile?: number
+  percentile?: number,
 ): EngineResult {
   if (data.length === 0) {
     return { error: 'Data array is empty' };

@@ -26,10 +26,7 @@ Examples of when NOT to use this tool:
     expression: z
       .string()
       .describe("Mathematical expression to evaluate, e.g. '(245 * 389) + (12^3 / 7)'"),
-    precision: z
-      .number()
-      .optional()
-      .describe('Significant digits for the result. Default: 14'),
+    precision: z.number().optional().describe('Significant digits for the result. Default: 14'),
   }),
 
   handler: async (args: { expression: string; precision?: number }) => {
@@ -37,13 +34,23 @@ Examples of when NOT to use this tool:
 
     if ('error' in result) {
       return {
-        content: [{ type: 'text' as const, text: JSON.stringify({ error: result.error, expression: args.expression }) }],
+        content: [
+          {
+            type: 'text' as const,
+            text: JSON.stringify({ error: result.error, expression: args.expression }),
+          },
+        ],
         isError: true,
       };
     }
 
     return {
-      content: [{ type: 'text' as const, text: JSON.stringify({ result: result.result, expression: args.expression }) }],
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify({ result: result.result, expression: args.expression }),
+        },
+      ],
     };
   },
 };
