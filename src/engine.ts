@@ -59,6 +59,8 @@ export function evaluateExpression(expression: string, precision: number = 14): 
   if (expression.trim().length === 0) {
     return { error: 'Expression is empty' };
   }
+  // Length check runs before normalization intentionally: prevents oversized input
+  // from reaching the normalizer, regardless of how normalization may expand the string.
   if (expression.length > MAX_EXPRESSION_LENGTH) {
     return {
       error: `Expression too long (${expression.length} chars, max ${MAX_EXPRESSION_LENGTH})`,
