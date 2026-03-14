@@ -1,19 +1,33 @@
 # Euclid
 
+> _"What is asserted without proof can be dismissed without proof — but what is proved, endures."_
+> — In the spirit of Euclid of Alexandria
+
+Twenty-three centuries ago, Euclid of Alexandria looked at the mathematics of his time — a tangle of folklore, intuition, and "trust me" — and said: _no more_. He built geometry from the ground up on axioms and proofs. If something was true, you could _show_ it was true. No hand-waving. No guessing.
+
+Large language models have the same problem Euclid's contemporaries did. They don't calculate — they _predict_. When you ask an LLM "what's 247 x 389?", it pattern-matches against its training data and guesses what the answer probably looks like. Sometimes right, sometimes wrong. You'd never know the difference.
+
 **Deterministic math tools for LLMs.**
 
-Large language models don't calculate — they predict. When you ask an LLM "what's 247 × 389?", it doesn't reach for a calculator. It pattern-matches against its training data and _guesses_ what the answer probably looks like. Sometimes it's right. Sometimes it's not. You'd never know the difference.
-
-Euclid fixes this. It's an open source [MCP server](https://modelcontextprotocol.io) that gives any LLM access to a real, deterministic math engine. One line in your config, and your model stops guessing and starts computing.
-
-> _"The laws of nature are but the mathematical thoughts of God."_
-> — Euclid (maybe)
+Euclid is an open source [MCP server](https://modelcontextprotocol.io) and [Claude Code plugin](https://docs.anthropic.com/en/docs/claude-code/plugins) that gives any LLM access to a real, deterministic math engine. What is self-evident should not be guessed — and arithmetic is about as self-evident as it gets.
 
 ---
 
-## Quick Start
+## Installation
 
-Add Euclid to your MCP client config. That's it.
+### Claude Code (Recommended)
+
+```bash
+claude plugin install euclidtools/euclid
+```
+
+One command. This installs the skill (teaches Claude when to use Euclid) and auto-registers the MCP server.
+
+### Manual MCP Registration (Claude Code)
+
+```bash
+claude mcp add euclid -- npx -y @euclid-tools/euclid
+```
 
 ### Claude Desktop
 
@@ -27,7 +41,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
   "mcpServers": {
     "euclid": {
       "command": "npx",
-      "args": ["-y", "@euclid-tools/euclid-mcp"]
+      "args": ["-y", "@euclid-tools/euclid"]
     }
   }
 }
@@ -43,24 +57,13 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
   "mcpServers": {
     "euclid": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@euclid-tools/euclid-mcp"]
+      "args": ["/c", "npx", "-y", "@euclid-tools/euclid"]
     }
   }
 }
 ```
 
 </details>
-
-### Claude Code
-
-```bash
-# macOS / Linux
-claude mcp add euclid "npx -y @euclid-tools/euclid-mcp"
-
-# Windows — add via the /mcp menu or edit .claude.json directly (see note below)
-```
-
-> **Windows + Claude Code:** The `claude mcp add` command doesn't split `cmd /c` into separate args correctly. Instead, use the `/mcp` menu inside Claude Code, or manually add the entry to your `.claude.json` using the same JSON config shown in the Claude Desktop section above.
 
 ### Cursor
 
@@ -74,7 +77,7 @@ Add to `~/.cursor/mcp.json`:
   "mcpServers": {
     "euclid": {
       "command": "npx",
-      "args": ["-y", "@euclid-tools/euclid-mcp"]
+      "args": ["-y", "@euclid-tools/euclid"]
     }
   }
 }
@@ -90,7 +93,7 @@ Add to `~/.cursor/mcp.json`:
   "mcpServers": {
     "euclid": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@euclid-tools/euclid-mcp"]
+      "args": ["/c", "npx", "-y", "@euclid-tools/euclid"]
     }
   }
 }
@@ -110,7 +113,7 @@ Add to `~/.windsurf/mcp.json`:
   "mcpServers": {
     "euclid": {
       "command": "npx",
-      "args": ["-y", "@euclid-tools/euclid-mcp"]
+      "args": ["-y", "@euclid-tools/euclid"]
     }
   }
 }
@@ -126,7 +129,7 @@ Add to `~/.windsurf/mcp.json`:
   "mcpServers": {
     "euclid": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@euclid-tools/euclid-mcp"]
+      "args": ["/c", "npx", "-y", "@euclid-tools/euclid"]
     }
   }
 }
@@ -136,9 +139,28 @@ Add to `~/.windsurf/mcp.json`:
 
 ### Other MCP Clients
 
-Any MCP client that supports stdio transport will work. Use `npx -y @euclid-tools/euclid-mcp` as the command (on Windows, run it through `cmd /c`).
+Any MCP client that supports stdio transport will work. Use `npx -y @euclid-tools/euclid` as the command (on Windows, run it through `cmd /c`).
 
-Restart your client. Done. Your LLM now has a calculator.
+### npx (one-off)
+
+```bash
+npx -y @euclid-tools/euclid
+```
+
+### npm (global install)
+
+```bash
+npm install -g @euclid-tools/euclid
+```
+
+### Local Development
+
+```bash
+git clone https://github.com/euclidtools/euclid.git
+cd euclid
+pnpm install
+pnpm dev
+```
 
 > **Why `cmd /c` on Windows?** On Windows, `npx` is a batch script (`npx.cmd`). MCP clients spawn processes directly, which can't execute `.cmd` files without a shell wrapper. Using `cmd /c` solves this. This affects all npx-based MCP servers, not just Euclid.
 
@@ -269,6 +291,7 @@ Expression evaluation is sandboxed — `import`, `require`, `createUnit`, nested
 - [x] Core `calculate` tool — expression evaluation
 - [x] `convert` tool — unit conversion
 - [x] `statistics` tool — mean, median, std, percentile, etc.
+- [x] Claude Code plugin — skills + auto-registration
 - [ ] Financial calculations — compound interest, NPV, amortisation
 - [ ] Date/time arithmetic — deterministic, not "about 3 months"
 - [ ] LLM accuracy benchmarks — prove the difference with data
