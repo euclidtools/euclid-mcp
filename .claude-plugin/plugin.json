@@ -1,0 +1,15 @@
+{
+  "name": "euclid",
+  "displayName": "Euclid",
+  "description": "Deterministic math tools for LLMs — MCP server + skills that teach Claude to use calculate, convert, and statistics tools instead of mental math",
+  "version": "0.2.0",
+  "author": {
+    "name": "Angus"
+  },
+  "homepage": "https://github.com/euclidtools/euclid",
+  "repository": "https://github.com/euclidtools/euclid",
+  "license": "MIT",
+  "keywords": ["math", "calculator", "mcp", "deterministic", "mathjs"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
