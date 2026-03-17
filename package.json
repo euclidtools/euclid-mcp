@@ -30,7 +30,10 @@
     "mathjs"
   ],
   "files": [
-    "dist"
+    "dist",
+    ".claude-plugin",
+    "skills",
+    "hooks"
   ],
   "license": "MIT",
   "engines": {
