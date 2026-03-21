@@ -147,7 +147,9 @@ function opDifference(args: Record<string, unknown>): DatetimeResult {
         diff = differenceInSeconds(toDate, fromDate);
         break;
       default:
-        return { error: `Unknown unit: "${unit}". Use years, months, weeks, days, hours, minutes, or seconds.` };
+        return {
+          error: `Unknown unit: "${unit}". Use years, months, weeks, days, hours, minutes, or seconds.`,
+        };
     }
     const base: DatetimeResult = { result: `${diff} ${unit}`, [unit]: diff };
     if (note) (base as Record<string, unknown>).note = note;
@@ -336,7 +338,8 @@ function opDaysInMonth(args: Record<string, unknown>): DatetimeResult {
 
   if (isNaN(year)) return { error: 'Missing required parameter: year' };
   if (isNaN(month)) return { error: 'Missing required parameter: month' };
-  if (month < 1 || month > 12) return { error: `Invalid month: ${month}. Must be between 1 and 12.` };
+  if (month < 1 || month > 12)
+    return { error: `Invalid month: ${month}. Must be between 1 and 12.` };
 
   // month is 1-based, Date constructor uses 0-based months
   const date = new Date(year, month - 1, 1);
@@ -358,10 +361,9 @@ function opAge(args: Record<string, unknown>): DatetimeResult {
   if ('error' in parsedBirth) return parsedBirth;
 
   const norms: NormalizeResult[] = [parsedBirth.norm];
-  let asOfDate: Date;
   const parsedAsOf = parseDate(args.asOf);
   if ('error' in parsedAsOf) return parsedAsOf;
-  asOfDate = parsedAsOf.date;
+  const asOfDate: Date = parsedAsOf.date;
   norms.push(parsedAsOf.norm);
 
   const { date: birthDate } = parsedBirth;

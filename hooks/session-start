@@ -24,7 +24,7 @@ escape_for_json() {
     printf '%s' "$s"
 }
 
-context="Euclid deterministic math tools are available via MCP. For ANY numerical computation, unit conversion, or statistical calculation, use the Euclid MCP tools (calculate, convert, statistics) instead of mental math. Never predict or estimate when a deterministic tool is available."
+context="Euclid deterministic math tools are available via MCP. For ANY numerical computation, unit conversion, statistical calculation, or date/time arithmetic, use the Euclid MCP tools (calculate, convert, statistics, datetime) instead of mental math. Never predict or estimate when a deterministic tool is available."
 context_escaped=$(escape_for_json "$context")
 
 # Output context injection

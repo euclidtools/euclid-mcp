@@ -49,10 +49,7 @@ Disambiguation: This tool does NOT handle timezone conversions or DST transition
         'The datetime operation to perform: difference, add, subtract, business_days, days_in_month, age, quarter, day_of_week, is_leap_year',
       ),
     date: z.string().optional().describe('A date string (ISO 8601 preferred: YYYY-MM-DD)'),
-    from: z
-      .string()
-      .optional()
-      .describe('Start date for difference or business_days operations'),
+    from: z.string().optional().describe('Start date for difference or business_days operations'),
     to: z.string().optional().describe('End date for difference or business_days operations'),
     amount: z.number().optional().describe('Number of units to add or subtract'),
     unit: z
@@ -91,7 +88,9 @@ Disambiguation: This tool does NOT handle timezone conversions or DST transition
     const required = REQUIRED_FIELDS[operation];
     if (required) {
       const missing = required.filter(
-        (field) => args[field as keyof typeof args] === undefined || args[field as keyof typeof args] === null,
+        (field) =>
+          args[field as keyof typeof args] === undefined ||
+          args[field as keyof typeof args] === null,
       );
       if (missing.length > 0) {
         const { hint, examples } = getErrorHint('datetime', 'Missing required');
@@ -131,7 +130,9 @@ Disambiguation: This tool does NOT handle timezone conversions or DST transition
     // Build a note starting with "Interpreted" when date normalization occurred
     const note = result.note ? `Interpreted: ${result.note}` : undefined;
 
-    const { note: _note, ...rest } = result;
+    // Omit the raw `note` from result and replace with the reformatted version
+    const { note: _rawNote, ...rest } = result;
+    void _rawNote;
     return {
       content: [
         {
