@@ -92,4 +92,37 @@ describe('getErrorHint', () => {
       expect(examples.length).toBeGreaterThanOrEqual(2);
     });
   });
+
+  describe('datetime', () => {
+    it('returns ISO format hint for invalid date errors', () => {
+      const { hint } = getErrorHint('datetime', "Invalid date 'abc'");
+      expect(hint).toContain('ISO');
+    });
+
+    it('returns ambiguous hint for ambiguous date format errors', () => {
+      const { hint } = getErrorHint('datetime', "Ambiguous date format '12/03/2026'");
+      expect(hint).toContain('YYYY-MM-DD');
+    });
+
+    it('returns month hint for invalid month errors', () => {
+      const { hint } = getErrorHint('datetime', 'Month must be between 1 and 12');
+      expect(hint).toContain('1 and 12');
+    });
+
+    it('returns missing fields hint for required field errors', () => {
+      const { hint } = getErrorHint('datetime', "Operation 'add' requires fields: date, amount");
+      expect(hint).toContain('requires');
+    });
+
+    it('returns fallback hint for unknown errors', () => {
+      const { hint, examples } = getErrorHint('datetime', 'Something weird happened');
+      expect(hint).toBeTruthy();
+      expect(examples.length).toBeGreaterThan(0);
+    });
+
+    it('always includes examples', () => {
+      const { examples } = getErrorHint('datetime', 'any error');
+      expect(examples.length).toBeGreaterThanOrEqual(2);
+    });
+  });
 });
